@@ -92,7 +92,7 @@ export const getPosts = ({ auth }) => {
   return axios ({
     method: 'get',
     url: `${baseUrl}/get-posts`,
-    header: {
+    headers: {
         Authorization: `Bearer ${auth.accessToken}`
     }
   })

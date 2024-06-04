@@ -2,6 +2,8 @@ import Images from './Images'
 import UploadImage from './UploadImage'
 import { useContext, useState } from 'react'
 import { AuthContext } from './context'
+import CreateUserPost from './CreateUserPost'
+import UserPosts from './UserPosts'
 
 function App() {
 
@@ -11,9 +13,10 @@ function App() {
 
   return (
     <div className="p-5">
+      <CreateUserPost />
       <UploadImage />
+      <UserPosts />
       <Images />
-
     </div>
   )
 }
