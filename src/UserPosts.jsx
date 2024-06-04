@@ -8,14 +8,15 @@ const UserPosts = () => {
     const [ userPosts, setUserPosts] = useState([])
     const { auth } = useContext(AuthContext)
 
+
     useEffect(
         () => {
             if (auth.accessToken) {
                 getPosts({ auth })
                     .then(response => {
-                        console.log('Get Posts Success')
                         setUserPosts(response.data)
-                        console.log(response.data)
+                        console.log('Get Posts Success')
+                        console.log('posts = ', response)
                     })
                     .catch(error => console.log('Get Posts Failure: ', error))
             }
@@ -30,9 +31,15 @@ const UserPosts = () => {
             {userPosts.map(post => (
                 <div key={post.id}>
                     <h2>{post.title}</h2>
-                    <p>{post.textContent}</p>
+                    <p>{post.text_content}</p>
+                    {/* <img src={post.post_images}
+                    style = {{width: '50%'}}
+                    /> */}
+                    <br></br>
                     <button onClick = {() => {
+                        console.log('Like has been pressed')
                         post.like_count += 1
+                        console.log(post.like_count)
                      }}>
                         Like
                     </button>

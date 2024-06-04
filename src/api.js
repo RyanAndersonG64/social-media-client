@@ -93,19 +93,18 @@ export const createImage = ({ auth, title, image }) => {
 export const getPosts = ({ auth }) => {
   return axios ({
     method: 'get',
-    url: `${baseUrl}/get-posts`,
+    url: `${baseUrl}/get-posts/`,
     headers: {
         Authorization: `Bearer ${auth.accessToken}`
     }
   })
   .then(response => {
-    console.log(response.data)
     return response
   })
   .catch(error => console.log('Get posts error: ', error))
 }
 
-export const addPost = ({ auth, title, postedBy, textContent, postImages }) => {
+export const addPost = ({ auth, title, postedBy, textContent }) => {
   return axios ({
     method: 'post',
     url: `${baseUrl}/add-post/`,
@@ -116,11 +115,11 @@ export const addPost = ({ auth, title, postedBy, textContent, postImages }) => {
       title,
       postedBy,
       textContent,
-      postImages
+      // postImages
     }
   })
   .then(response => {
-    console.log(response.data)
+    console.log('axios response = ', response.data)
     return response
   })
   .catch(error => console.log('Add post error: ', error))

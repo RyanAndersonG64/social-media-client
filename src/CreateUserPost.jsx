@@ -18,13 +18,14 @@ const createUserPost = () => {
             console.log('fetchUser response: ', response)
             setPostedBy(response.data.id)
 
-        createImage ({ auth, title: '', image: postImages })
+        // const imageToPost = createImage ({ auth, title: '', image: postImages })
 
-            .then(response => {
-                console.log('Create Image Success')
-                console.log(response)
-                
-                addPost ({ auth, title, postedBy, textContent, postImages })
+            // .then(response => {
+            //     console.log('Create Image Success')
+            //     console.log(response)
+            //     const imageToPost = response
+
+                addPost ({ auth, title, postedBy: postedBy, textContent })
                 .then(response => {
                     console.log('Create Post Success')
                     console.log(response)
@@ -33,8 +34,8 @@ const createUserPost = () => {
                 })
                 .catch(error => console.log('Create Post failure: ', error))
             })
-            .catch(error => console.log('Create Image failure: ', error))
-        })
+            // .catch(error => console.log('Create Image failure: ', error))
+        // })
         .catch(error => console.log('Find post creator error: ', error))
 
         
