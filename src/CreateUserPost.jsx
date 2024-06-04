@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "./context"
-import { createImage, addPost } from "./api"
+import { createImage, addPost, fetchUser } from "./api"
 
 const createUserPost = () => {
     const { auth } = useContext(AuthContext)
@@ -8,20 +8,55 @@ const createUserPost = () => {
     const [postedBy, setPostedBy] = useState(undefined)
     const [textContent, setTextContent] = useState('')
     const [postImages, setPostImages] = useState(undefined)
-    const [userId, setUserId] = useState(0)
+
 
     const submit = () => {
+
+
         fetchUser({ auth })
-            .then(response => { 
-                setUserId(response.data.id)
-                addPost ({ auth, title, postedBy : userId, textContent, postImages })
+        .then(response => {
+            console.log('fetchUser response: ', response)
+            setPostedBy(response.data.id)
+
+        createImage ({ auth, title: '', image: postImages })
+
+            .then(response => {
+                console.log('Create Image Success')
+                console.log(response)
+                
+                addPost ({ auth, title, postedBy, textContent, postImages })
                 .then(response => {
                     console.log('Create Post Success')
                     console.log(response)
+                    // return response
+                    
                 })
                 .catch(error => console.log('Create Post failure: ', error))
-    })
-        .catch(error => console.log('Find Post Creator failure: ', error))
+            })
+            .catch(error => console.log('Create Image failure: ', error))
+        })
+        .catch(error => console.log('Find post creator error: ', error))
+
+        
+        // createImage ({ auth, title: '', image: postImages })
+        // .then(response => {
+        //     console.log('Create Image Success')
+        //     console.log(response.data)
+        // })
+        // .catch(error => console.log('Create Image failure: ', error))
+
+
+        // addPost ({ auth, title, postedBy, textContent, postImages })
+        // .then(response => {
+        //     console.log('Create Post Success')
+        //     console.log(response.data)
+        // })
+        // .catch(error => console.log('Create Post failure: ', error))
+
+
+
+    
+
     }
 
     return (
@@ -44,12 +79,12 @@ const createUserPost = () => {
                 <input 
                     accept='image/*'
                     type='file'
-                    onChange={e => setImage(e.target.files[0])}
+                    onChange={e => setPostImages(e.target.files[0])}
                 />
             </div>
             <div>
                 <button onClick={() => submit()}>
-                    Submit
+                    Submit Post
 
                 </button>
             </div>

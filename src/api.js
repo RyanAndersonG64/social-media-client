@@ -17,7 +17,7 @@ export const getToken = ({ auth, username, password }) => {
 }
 
 export const fetchUser = ({ auth }) => {
-  axios({
+  return axios({
     method: 'get',
     url: `${baseUrl}/profile/`, 
     headers: {
@@ -25,6 +25,7 @@ export const fetchUser = ({ auth }) => {
     }
   }).then(response => {
     console.log('PROFILE: ', response)
+    return response
   })
   .catch(error => {
     console.log('ERROR: ', error)
@@ -33,7 +34,7 @@ export const fetchUser = ({ auth }) => {
 }
 
 export const createUser = ({ username, password, firstName, lastName }) => {
-  axios({
+  return axios({
     method: 'post',
     url: `${baseUrl}/create-user/`, 
     data: {
@@ -44,6 +45,7 @@ export const createUser = ({ username, password, firstName, lastName }) => {
     }
   }).then(response => {
     console.log('CREATE USER: ', response)
+    return response
   })
   .catch(error => {
     console.log('ERROR: ', error)

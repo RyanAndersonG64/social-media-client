@@ -16,7 +16,7 @@ function App() {
       <CreateUserPost />
       <UploadImage />
       <UserPosts />
-      <Images />
+      {/* <Images /> */}
     </div>
   )
 }

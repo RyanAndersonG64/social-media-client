@@ -5,7 +5,7 @@ import { getPosts } from './api'
 
 
 const UserPosts = () => {
-    const [ posts, setPosts] = useState({})
+    const [ userPosts, setUserPosts] = useState([])
     const { auth } = useContext(AuthContext)
 
     useEffect(
@@ -14,7 +14,7 @@ const UserPosts = () => {
                 getPosts({ auth })
                     .then(response => {
                         console.log('Get Posts Success')
-                        setPosts(response.data)
+                        setUserPosts(response.data)
                         console.log(response.data)
                     })
                     .catch(error => console.log('Get Posts Failure: ', error))
@@ -27,10 +27,19 @@ const UserPosts = () => {
         <div>
             <hr />
             <h1>Posts</h1>
-            {UserPosts && UserPosts.map(post => (
+            {userPosts.map(post => (
                 <div key={post.id}>
                     <h2>{post.title}</h2>
                     <p>{post.textContent}</p>
+                    <button onClick = {() => {
+                        post.like_count += 1
+                     }}>
+                        Like
+                    </button>
+                    <h6> Likes: {post.like_count} </h6> 
+                    <br></br>
+                    <h6> Posted by {post.posted_by} at {post.posted_at} </h6>
+                    <hr />
                 </div>
             ))}
         </div>
