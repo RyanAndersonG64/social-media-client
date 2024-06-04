@@ -49,3 +49,95 @@ export const createUser = ({ username, password, firstName, lastName }) => {
     console.log('ERROR: ', error)
   })
 }
+
+
+export const getImages = ({ auth }) => {
+  return axios ({
+    method: 'get',
+    url: `${baseUrl}/get-images`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Get images error: ', error))
+}
+
+
+export const createImage = ({ auth, title, image }) => {
+  return axios ({
+    method: 'post',
+    url: `${baseUrl}/create-image/`,
+    data: {
+      image,
+      title,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`,
+      'Content-Type': 'multipart/form-data'
+    },
+  })
+  // .then(response => {
+  //   console.log(response.data)
+  //   return response
+  // })
+  // .catch(error => console.log('Create images error: ', error))
+}
+
+
+export const getPosts = ({ auth }) => {
+  return axios ({
+    method: 'get',
+    url: `${baseUrl}/get-posts`,
+    header: {
+        Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Get posts error: ', error))
+}
+
+export const addPost = ({ auth, title, postedBy, textContent, postImages }) => {
+  return axios ({
+    method: 'post',
+    url: `${baseUrl}/add-post/`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    },
+    data: {
+      title,
+      postedBy,
+      textContent,
+      postImages
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Add post error: ', error))
+}
+
+export const deletePost = ({ auth, postId }) => {
+  return axios ({
+    method: 'delete',
+    url: `${baseUrl}/delete-post/`,
+    data: {
+      postId
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Delete post error: ', error))
+}
