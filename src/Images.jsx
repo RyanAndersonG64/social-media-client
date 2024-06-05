@@ -1,12 +1,18 @@
 import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { AuthContext } from './context'
-import { getImages } from './api'
+import { getImages, fetchUser, deleteImage, likeImage } from './api'
 
 
 const Images = () => {
     const [ images, setImages] = useState([])
     const { auth } = useContext(AuthContext)
+    const [userId, setUserId] = useState(0)
+    fetchUser({ auth })
+        .then(response => {
+            console.log('fetchUser response: ', response.data.id)
+            setUserId(response.data.id)
+        })
 
     useEffect(
         () => {
@@ -30,9 +36,44 @@ const Images = () => {
             {Images && images.map(image => (
                 <div key={image.id}>
                     <h3>{image.title}</h3>
-                    <img src={`http://127.0.0.1:8000/${image.image}`}
-                    style = {{width: '50%'}}
-                    />
+                    <div>
+                        <img src={`http://127.0.0.1:8000/${image.image}`}
+                        style = {{width: '50%'}}
+                        />
+                    </div>
+                    <br></br>
+                    <button onClick = {() => {
+                        console.log('Like has been pressed')
+                        likeImage ({ auth, current_user: userId, image_id: image.id, likes: image.likes }) 
+                        .then(response => { 
+                            console.log('response from likeImage')
+                            getImages({ auth })
+                            .then(res => {
+                                console.log('res from getImages: ', res)
+                                setImages(res.data)}) 
+                        })  
+                        
+                     }}>
+                        Like
+                    </button>
+
+                    <button style={{ marginLeft: 20 }} onClick = {() => {
+                        // if (image.posted_by.id === userId) {
+                            console.log('Delete has been pressed')
+                            deleteImage ({ auth, imageId : image.id }) 
+                            .then(response => { 
+                                getImages({ auth })
+                                .then(res => {
+                                    console.log('res from getImages: ', res)
+                                    setImages(res.data)}) 
+                            })  
+                        // } else {
+                        //     alert("You can't delete someone else's image")
+                        // }
+                    }}>
+                        Delete
+                    </button>
+                    <h6> Likes: {image.likes} </h6>
                 </div>
             ))}
         </div>

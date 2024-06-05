@@ -89,6 +89,39 @@ export const createImage = ({ auth, title, image }) => {
   // .catch(error => console.log('Create images error: ', error))
 }
 
+export const likeImage = ({ auth, current_user, image_id, likes }) => {
+  return axios ({
+    method: 'put',
+    url: `${baseUrl}/like-image/`,
+    data: {
+      current_user,
+      image_id,
+      likes
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`,
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+}
+
+export const deleteImage = ({ auth, imageId }) => {
+  return axios ({
+    method: 'delete',
+    url: `${baseUrl}/delete-image/`,
+    data: {
+      imageId
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {return response})
+}
 
 export const getPosts = ({ auth }) => {
   return axios ({
@@ -113,13 +146,32 @@ export const addPost = ({ auth, title, postedBy, textContent }) => {
     },
     data: {
       title,
-      postedBy,
-      textContent,
-      // postImages
+      posted_by: postedBy,
+      text_content: textContent,
+      // post_images: postImages
     }
   })
   .then(response => {
-    console.log('axios response = ', response.data)
+    console.log('django response = ', response.data)
+    return response
+  })
+  .catch(error => console.log('Add post error: ', error))
+}
+
+export const editPost = ({ auth, postId, textContent }) => {
+  return axios ({
+    method: 'patch',
+    url: `${baseUrl}/edit-post/`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    },
+    data: {
+      post_pk: postId,
+      text_content: textContent,
+    }
+  })
+  .then(response => {
+    console.log('django response = ', response.data)
     return response
   })
   .catch(error => console.log('Add post error: ', error))
@@ -141,4 +193,23 @@ export const deletePost = ({ auth, postId }) => {
     return response
   })
   .catch(error => console.log('Delete post error: ', error))
+}
+
+export const likePost = ({ auth, current_user, post_id, likes }) => {
+  return axios ({
+    method: 'put',
+    url: `${baseUrl}/like-post/`,
+    data: {
+      current_user,
+      post_id,
+      likes
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
 }

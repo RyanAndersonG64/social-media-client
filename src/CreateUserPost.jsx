@@ -1,13 +1,15 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "./context"
-import { createImage, addPost, fetchUser } from "./api"
+import { createImage, addPost, fetchUser, getPosts } from "./api"
+import UserPosts from "./UserPosts"
+import Images from "./Images"
 
 const createUserPost = () => {
     const { auth } = useContext(AuthContext)
     const [title, setTitle] = useState('')
-    const [postedBy, setPostedBy] = useState(undefined)
     const [textContent, setTextContent] = useState('')
     const [postImages, setPostImages] = useState(undefined)
+    const [userPosts, setUserPosts] = useState([])
 
 
     const submit = () => {
@@ -15,8 +17,10 @@ const createUserPost = () => {
 
         fetchUser({ auth })
         .then(response => {
-            console.log('fetchUser response: ', response)
-            setPostedBy(response.data.id)
+            console.log('fetchUser response: ', response.data.id)
+            const poster = response.data.id
+            // setPostedBy(response.data.id)
+            // console.log(postedBy)
 
         // const imageToPost = createImage ({ auth, title: '', image: postImages })
 
@@ -25,11 +29,13 @@ const createUserPost = () => {
             //     console.log(response)
             //     const imageToPost = response
 
-                addPost ({ auth, title, postedBy: postedBy, textContent })
-                .then(response => {
-                    console.log('Create Post Success')
-                    console.log(response)
-                    // return response
+                addPost ({ auth, title, postedBy: poster, textContent })
+                .then(response => { 
+                    console.log('response from AddPost: ', response)
+                    getPosts({ auth })
+                    .then(res => {
+                        console.log('res from getPosts: ', res)
+                        setUserPosts(res.data)}) 
                     
                 })
                 .catch(error => console.log('Create Post failure: ', error))
@@ -76,12 +82,19 @@ const createUserPost = () => {
             />
             <hr />
             <div>
-                Add an Image
-                <input 
-                    accept='image/*'
-                    type='file'
-                    onChange={e => setPostImages(e.target.files[0])}
-                />
+                {/* <label htmlFor="images">Select an image:</label>
+                <select id="images" name="images" onChange = {(e) => {
+                    console.log(e.target.value)
+                    setPostImages(menu.filter(menuItem => !menuItem.allergens.includes(e.target.value)))
+                        }
+                    }
+                    >
+                    {selectedAllergen.map(item => {
+                        return (
+                            <option key = {item.id} value = {item.name}>{item.name}</option>
+                        )
+                    })}
+                </select> */}
             </div>
             <div>
                 <button onClick={() => submit()}>
