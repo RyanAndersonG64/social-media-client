@@ -24,6 +24,7 @@ const Images = () => {
                     .then(response => {
                         console.log('Get Images Success')
                         setImageState(response.data)
+                        setImages(response.data)
                         console.log(response.data)
                     })
                     .catch(error => console.log('Get Images Failure: ', error))
@@ -36,6 +37,38 @@ const Images = () => {
         <div>
             <hr />
             <h1>Images</h1>
+            <label htmlFor="imageFilter">Sort images by:</label>
+            <select id="imageTypes" name="imageTypes" onChange = {(e) => {
+                console.log(e.target.value)
+                if (e.target.value === 'All Images') {
+                    getImages({ auth })
+                    .then(response => {
+                        setImageState(response.data)
+                    })
+                    .catch(error => console.log('Get Images Failure: ', error))
+                } else if (e.target.value === 'Your Images') {
+                    getImages({ auth })
+                    .then(response => {
+                        setImageState(response.data.filter((image) => image.posted_by === userId))
+                    })
+                    .catch(error => console.log('Get Images Failure: ', error))
+                } else if (e.target.value === 'Liked Images') {
+                    getImages({ auth })
+                    .then(response => {
+                        setImageState(response.data.filter((image) => image.liked_by.includes(userId)))
+                    })
+                    .catch(error => console.log('Get Images Failure: ', error))
+                } else {
+                    setImageState(images)
+                }
+                    }
+                }
+                >
+            <option value = 'All Images'>All Images</option>
+            <option value = 'Your Images'>Your Images</option>
+            <option value = 'Liked Images'>Liked Images</option>
+
+            </select>
             {Images && imageState.map(image => (
                 <div key={image.id}>
                     <h3>{image.title}</h3>
@@ -68,7 +101,8 @@ const Images = () => {
                                 getImages({ auth })
                                 .then(res => {
                                     console.log('res from getImages: ', res)
-                                    setImageState(res.data)}) 
+                                    setImageState(res.data)})
+                                    setImages(res.data) 
                             })  
                         } else {
                             alert("You can't delete someone else's image")

@@ -19,6 +19,7 @@ import Login from './Login'
 import { AuthContext } from './context'
 import { PostContext } from './postcontext'
 import { ImageContext } from './imageconext'
+import { userContext } from '/usercontext'
 
 
 function Layout() {
@@ -42,11 +43,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/',
+        path: '/app',
         element: <App />
       },
       {
-        path: '/login',
+        path: '/',
         element: <Login />
       },
       {

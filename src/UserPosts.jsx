@@ -7,7 +7,7 @@ import Images from "./Images"
 
 
 const UserPosts = () => {
-    // const [ userPosts, setUserPosts] = useState([])
+    const [ userPosts, setUserPosts] = useState([])
     const { auth } = useContext(AuthContext)
     const {postState, setPostState} = useContext(PostContext)
     const [userId, setUserId] = useState(0)
@@ -34,6 +34,7 @@ const UserPosts = () => {
                 getPosts({ auth })
                     .then(response => {
                         setPostState(response.data)
+                        setUserPosts(response.data)
                         console.log('Get Posts Success')
                         console.log('posts = ', response)
                     })
@@ -47,6 +48,39 @@ const UserPosts = () => {
         <div>
             <hr />
             <h1>Posts</h1>
+            <label htmlFor="postFilter">Sort posts by:</label>
+            <select id="postTypes" name="postTypes" onChange = {(e) => {
+                console.log(e.target.value)
+                if (e.target.value === 'All Posts') {
+                    getPosts({ auth })
+                    .then(response => {
+                        setPostState(response.data)
+                    })
+                    .catch(error => console.log('Get Posts Failure: ', error))
+                } else if (e.target.value === 'Your Posts') {
+                    getPosts({ auth })
+                    .then(response => {
+                        setPostState(response.data.filter((post) => post.posted_by === userId))
+                    })
+                    .catch(error => console.log('Get Posts Failure: ', error))
+                } else if (e.target.value === 'Liked Posts') {
+                    getPosts({ auth })
+                    .then(response => {
+                        setPostState(response.data.filter((post) => post.liked_by.includes(userId)))
+                    })
+                    .catch(error => console.log('Get Posts Failure: ', error))
+                } else {
+                    setPostState(userPosts)
+                }
+                    }
+                }
+                >
+            <option value = 'All Posts'>All Posts</option>
+            <option value = 'Your Posts'>Your Posts</option>
+            <option value = 'Liked Posts'>Liked Posts</option>
+
+            </select>
+
             {postState.map(post => (
                 <div key={post.id}>
                     <h2>{post.title}</h2>
