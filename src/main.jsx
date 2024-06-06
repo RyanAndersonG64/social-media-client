@@ -19,7 +19,7 @@ import Login from './Login'
 import { AuthContext } from './context'
 import { PostContext } from './postcontext'
 import { ImageContext } from './imageconext'
-import { userContext } from '/usercontext'
+import { UserContext } from './usercontext'
 
 
 function Layout() {
@@ -94,6 +94,8 @@ const ImageContextProvider = ({ children }) => {
     </ImageContext.Provider>
   )
 }
+
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
