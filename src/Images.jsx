@@ -1,12 +1,14 @@
 import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { AuthContext } from './context'
+import { ImageContext } from "./imageconext"
 import { getImages, fetchUser, deleteImage, likeImage } from './api'
 
 
 const Images = () => {
     const [ images, setImages] = useState([])
     const { auth } = useContext(AuthContext)
+    const { imageState, setImageState} = useContext(ImageContext)
     const [userId, setUserId] = useState(0)
     fetchUser({ auth })
         .then(response => {
@@ -14,13 +16,14 @@ const Images = () => {
             setUserId(response.data.id)
         })
 
+
     useEffect(
         () => {
             if (auth.accessToken) {
                 getImages({ auth })
                     .then(response => {
                         console.log('Get Images Success')
-                        setImages(response.data)
+                        setImageState(response.data)
                         console.log(response.data)
                     })
                     .catch(error => console.log('Get Images Failure: ', error))
@@ -33,7 +36,7 @@ const Images = () => {
         <div>
             <hr />
             <h1>Images</h1>
-            {Images && images.map(image => (
+            {Images && imageState.map(image => (
                 <div key={image.id}>
                     <h3>{image.title}</h3>
                     <div>
@@ -50,7 +53,7 @@ const Images = () => {
                             getImages({ auth })
                             .then(res => {
                                 console.log('res from getImages: ', res)
-                                setImages(res.data)}) 
+                                setImageState(res.data)}) 
                         })  
                         
                      }}>
@@ -65,7 +68,7 @@ const Images = () => {
                                 getImages({ auth })
                                 .then(res => {
                                     console.log('res from getImages: ', res)
-                                    setImages(res.data)}) 
+                                    setImageState(res.data)}) 
                             })  
                         } else {
                             alert("You can't delete someone else's image")

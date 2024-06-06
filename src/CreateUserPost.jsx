@@ -1,8 +1,11 @@
-import { useContext, useState } from "react"
+import { createContext, useContext, useState } from "react"
 import { AuthContext } from "./context"
+import { PostContext } from './postcontext'
 import { createImage, addPost, fetchUser, getPosts } from "./api"
 import UserPosts from "./UserPosts"
 import Images from "./Images"
+
+
 
 const createUserPost = () => {
     const { auth } = useContext(AuthContext)
@@ -10,6 +13,8 @@ const createUserPost = () => {
     const [textContent, setTextContent] = useState('')
     const [postImages, setPostImages] = useState(undefined)
     const [userPosts, setUserPosts] = useState([])
+
+    const {postState, setPostState} = useContext(PostContext)
 
 
     const submit = () => {
@@ -35,7 +40,7 @@ const createUserPost = () => {
                     getPosts({ auth })
                     .then(res => {
                         console.log('res from getPosts: ', res)
-                        setUserPosts(res.data)}) 
+                        setPostState(res.data)}) 
                     
                 })
                 .catch(error => console.log('Create Post failure: ', error))

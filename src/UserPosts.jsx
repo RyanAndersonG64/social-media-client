@@ -1,13 +1,15 @@
 import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { AuthContext } from './context'
+import { PostContext } from "./postcontext"
 import { getPosts, deletePost, editPost, fetchUser, addPost, likePost } from './api'
 import Images from "./Images"
 
 
 const UserPosts = () => {
-    const [ userPosts, setUserPosts] = useState([])
+    // const [ userPosts, setUserPosts] = useState([])
     const { auth } = useContext(AuthContext)
+    const {postState, setPostState} = useContext(PostContext)
     const [userId, setUserId] = useState(0)
     fetchUser({ auth })
         .then(response => {
@@ -31,7 +33,7 @@ const UserPosts = () => {
             if (auth.accessToken) {
                 getPosts({ auth })
                     .then(response => {
-                        setUserPosts(response.data)
+                        setPostState(response.data)
                         console.log('Get Posts Success')
                         console.log('posts = ', response)
                     })
@@ -45,13 +47,11 @@ const UserPosts = () => {
         <div>
             <hr />
             <h1>Posts</h1>
-            {userPosts.map(post => (
+            {postState.map(post => (
                 <div key={post.id}>
                     <h2>{post.title}</h2>
                     <p>{post.text_content}</p>
-                    {/* <img src={post.post_images}
-                    style = {{width: '50%'}}
-                    /> */}
+
                     <br></br>
                     <button onClick = {() => {
                         console.log('Like has been pressed')
@@ -60,7 +60,7 @@ const UserPosts = () => {
                             getPosts({ auth })
                             .then(res => {
                                 console.log('res from likePosts: ', res)
-                                setUserPosts(res.data)}) 
+                                setPostState(res.data)}) 
                         })  
                         
                      }}>
@@ -75,7 +75,7 @@ const UserPosts = () => {
                                 getPosts({ auth })
                                 .then(res => {
                                     console.log('res from getPosts: ', res)
-                                    setUserPosts(res.data)}) 
+                                    setPostState(res.data)}) 
                             })  
                         } else {
                             alert("You can't delete someone else's post")
@@ -92,7 +92,7 @@ const UserPosts = () => {
                                 getPosts({ auth })
                                 .then(res => {
                                     console.log('res from getPosts: ', res)
-                                    setUserPosts(res.data)}) 
+                                    setPostState(res.data)}) 
                             })
                         } else {
                             alert("You can't edit someone else's post")

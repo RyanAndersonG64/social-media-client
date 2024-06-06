@@ -16,9 +16,13 @@ import Header from './Header'
 import Footer from './Footer'
 import Login from './Login'
 import { AuthContext } from './context'
+import { PostContext } from './postcontext'
+import { ImageContext } from './imageconext'
 
 
 function Layout() {
+
+
   return (
     <>
       <Header />
@@ -56,15 +60,41 @@ const AuthContextProvider = ({ children }) => {
     setAccessToken,
   }
 
-  return(
+  
+  
+  return (
     <AuthContext.Provider value={{ auth: auth }} >
       {children}
     </AuthContext.Provider>
   )
 }
 
+const PostContextProvider = ({ children }) => {
+  const [postState, setPostState] = useState([])
+
+  return (
+    <PostContext.Provider value={{ postState, setPostState }}>
+      {children}
+    </PostContext.Provider>
+  )
+}
+
+const ImageContextProvider = ({ children }) => {
+  const [imageState, setImageState] = useState([])
+
+  return (
+    <ImageContext.Provider value={{ imageState, setImageState }}>
+      {children}
+    </ImageContext.Provider>
+  )
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
+  <PostContextProvider>
+  <ImageContextProvider>
     <RouterProvider router={router} />
+  </ImageContextProvider>
+  </PostContextProvider>
   </AuthContextProvider>
 )

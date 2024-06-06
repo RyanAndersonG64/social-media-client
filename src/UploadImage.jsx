@@ -1,9 +1,14 @@
-import { useContext, useState } from "react"
+import { createContext, useContext, useState } from "react"
 import { AuthContext } from "./context"
-import { createImage, fetchUser } from "./api"
+import { ImageContext } from './imageconext'
+import { createImage, fetchUser, getImages } from "./api"
+import App from "./App"
+
 
 const UploadImage = () => {
     const { auth } = useContext(AuthContext)
+    const {imageState, setImageState} = useContext(ImageContext)
+
     const [image, setImage] = useState(undefined)
     const [title, setTitle] = useState('')
     const [userId, setUserId] = useState(0)
@@ -18,6 +23,10 @@ const UploadImage = () => {
         .then(response => {
             console.log('Create Image Success')
             console.log(response)
+            getImages({ auth })
+            .then(res => {
+                console.log('res from getImages: ', res)
+                setImageState(res.data)}) 
         })
         .catch(error => console.log('Create Image failure: ', error))
     }
@@ -44,7 +53,12 @@ const UploadImage = () => {
                 </button>
             </div>
         </div>
+
     )
+
+
+    
+
 }
 
 
