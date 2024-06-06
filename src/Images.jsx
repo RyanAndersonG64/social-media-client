@@ -58,7 +58,7 @@ const Images = () => {
                     </button>
 
                     <button style={{ marginLeft: 20 }} onClick = {() => {
-                        // if (image.posted_by.id === userId) {
+                        if (image.posted_by.id === userId) {
                             console.log('Delete has been pressed')
                             deleteImage ({ auth, imageId : image.id }) 
                             .then(response => { 
@@ -67,13 +67,17 @@ const Images = () => {
                                     console.log('res from getImages: ', res)
                                     setImages(res.data)}) 
                             })  
-                        // } else {
-                        //     alert("You can't delete someone else's image")
-                        // }
+                        } else {
+                            alert("You can't delete someone else's image")
+                        }
                     }}>
                         Delete
                     </button>
                     <h6> Likes: {image.likes} </h6>
+                    
+                    <br></br>
+                    <h6> Posted by {image.posted_by.first_name} at {image.created_at} </h6>
+                    <hr />
                 </div>
             ))}
         </div>

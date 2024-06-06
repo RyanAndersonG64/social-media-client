@@ -103,7 +103,7 @@ const UserPosts = () => {
                     <h6> Likes: {post.likes} </h6>
 
                     <br></br>
-                    <h6> Posted by {post.posted_by} at {post.posted_at} </h6>
+                    <h6> Posted by {post.posted_by.first_name} at {post.posted_at} </h6>
                     <hr />
                 </div>
             ))}

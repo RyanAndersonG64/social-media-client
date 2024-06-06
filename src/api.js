@@ -69,11 +69,12 @@ export const getImages = ({ auth }) => {
 }
 
 
-export const createImage = ({ auth, title, image }) => {
+export const createImage = ({ auth, posted_by, title, image }) => {
   return axios ({
     method: 'post',
     url: `${baseUrl}/create-image/`,
     data: {
+      posted_by,
       image,
       title,
     },
