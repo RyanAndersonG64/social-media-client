@@ -61,7 +61,7 @@ const Images = () => {
                     </button>
 
                     <button style={{ marginLeft: 20 }} onClick = {() => {
-                        if (image.posted_by.id === userId) {
+                        if (image.posted_by === userId) {
                             console.log('Delete has been pressed')
                             deleteImage ({ auth, imageId : image.id }) 
                             .then(response => { 
@@ -79,7 +79,7 @@ const Images = () => {
                     <h6> Likes: {image.likes} </h6>
                     
                     <br></br>
-                    <h6> Posted by {image.posted_by.first_name} at {image.created_at} </h6>
+                    <h6> Posted by {image.poster_name} at {image.created_at} </h6>
                     <hr />
                 </div>
             ))}

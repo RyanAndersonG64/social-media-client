@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 
 import App from './App'
+import ImageGallery from './ImageGallery'
 import ErrorPage from './ErrorPage'
 import Header from './Header'
 import Footer from './Footer'

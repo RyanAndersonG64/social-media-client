@@ -5,7 +5,7 @@ import { AuthContext } from './context'
 import CreateUserPost from './CreateUserPost'
 import UserPosts from './UserPosts'
 
-function App() {
+function ImageGallery() {
 
   const { auth } = useContext(AuthContext)
   const [userId, setUserId] = useState(0)
@@ -19,4 +19,4 @@ function App() {
   )
 }
 
-export default App
+export default ImageGallery
