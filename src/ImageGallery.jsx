@@ -13,8 +13,8 @@ function App() {
 
   return (
     <div className="p-5">
-      <CreateUserPost />
-      <UserPosts />
+      <UploadImage />
+      <Images />
     </div>
   )
 }
